@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #51EAFF 0%, #F3BFFB 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .container {
+        padding: 20px;
+        text-align: center;
+      }
+      button {
+        padding: 10px 20px;
+        margin: 10px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+    </style>
+    <script>
+      function showAddSalesRepDialog() {
+        google.script.run.withSuccessHandler(function(html) {
+          document.open();
+          document.write(html);
+          document.close();
+        }).showAddSalesRepDialog();
+      }
+
+      function showDeleteSalesRepDialog() {
+        google.script.run.withSuccessHandler(function(html) {
+          document.open();
+          document.write(html);
+          document.close();
+        }).showDeleteSalesRepDialog();
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Sales Management System</h1>
+      <button onclick="showAddSalesRepDialog()">Add Sales Representative</button>
+      <button onclick="showDeleteSalesRepDialog()">Delete Sales Representative</button>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #51EAFF 0%, #F3BFFB 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .container label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      .container input[type="text"],
+      .container input[type="email"],
+      .container input[type="date"],
+      .container select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .container input[type="button"] {
+        width: 100%;
+        padding: 10px;
+        background: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+      }
+      .container input[type="button"]:hover {
+        background: #eee;
+      }
+    </style>
+    <script>
+      function updateEmail() {
+        const salesRep = document.getElementById('salesRep').value;
+        const salesReps = JSON.parse(document.getElementById('salesRepsData').value);
+        const rep = salesReps.find(rep => rep.name === salesRep);
+        document.getElementById('emailRep').value = rep ? rep.email : '';
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <form id="addLeadForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="emailCus">Customer Email:</label>
+        <input type="email" id="emailCus" name="emailCus" required>
+        
+        <label for="phone">Phone (Format: xxx-xxxxxxx):</label>
+        <input type="text" id="phone" name="phone" pattern="\d{3}-\d{7}" placeholder="123-4567890" required>
+        <small>Please enter the phone number in the format xxx-xxxxxxx</small>
+        
+        <label for="salesRep">Sales Rep:</label>
+        <select id="salesRep" name="salesRep" onchange="updateEmail()" required>
+          <script>
+            google.script.run.withSuccessHandler(function(salesReps) {
+              const select = document.getElementById('salesRep');
+              const hiddenInput = document.createElement('input');
+              hiddenInput.type = 'hidden';
+              hiddenInput.id = 'salesRepsData';
+              hiddenInput.value = JSON.stringify(salesReps);
+              document.body.appendChild(hiddenInput);
+
+              salesReps.forEach(rep => {
+                const option = document.createElement('option');
+                option.value = rep.name;
+                option.text = rep.name;
+                select.appendChild(option);
+              });
+            }).getSalesReps();
+          </script>
+        </select>
+        
+        <label for="emailRep">Sales Rep Email:</label>
+        <input type="email" id="emailRep" name="emailRep" readonly required>
+        
+        <label for="followUpDate">Due Date:</label>
+        <input type="date" id="followUpDate" name="followUpDate" required>
+        
+        <label for="customerStatus">Customer Status:</label>
+        <select id="customerStatus" name="customerStatus" required>
+          <option value="new">New</option>
+          <option value="contacted">Contacted</option>
+        </select>
+        
+        <label for="followUpStatus">Follow-Up Status:</label>
+        <select id="followUpStatus" name="followUpStatus" required>
+          <option value="Pending">Pending</option>
+          <option value="Overdue">Overdue</option>
+          <option value="Followed-up">Followed-up</option>
+        </select>
+        
+        <input type="button" value="Add Customer" onclick="google.script.run.withSuccessHandler(google.script.host.close).addLead(
+          document.getElementById('name').value,
+          document.getElementById('emailCus').value,
+          document.getElementById('phone').value,
+          document.getElementById('salesRep').value,
+          document.getElementById('emailRep').value,
+          document.getElementById('followUpDate').value,
+          document.getElementById('customerStatus').value,
+          document.getElementById('followUpStatus').value)">
+      </form>
+    </div>
+  </body>
+</html>

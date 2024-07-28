@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #51EAFF 0%, #F3BFFB 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .container label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      .container input[type="text"],
+      .container input[type="email"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .container input[type="button"] {
+        width: 100%;
+        padding: 10px;
+        background: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+      }
+      .container input[type="button"]:hover {
+        background: #eee;
+      }
+    </style>
+    <script>
+      function addSalesRep() {
+        const name = document.getElementById('salesRepName').value;
+        const email = document.getElementById('salesRepEmail').value;
+        google.script.run.addSalesRep(name, email);
+        alert('Sales Rep Added Successfully');
+        google.script.host.close();
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <form id="addSalesRepForm">
+        <label for="salesRepName">Sales Rep Name:</label>
+        <input type="text" id="salesRepName" name="salesRepName" required>
+        
+        <label for="salesRepEmail">Sales Rep Email:</label>
+        <input type="email" id="salesRepEmail" name="salesRepEmail" required>
+        
+        <input type="button" value="Add Sales Rep" onclick="addSalesRep()">
+      </form>
+    </div>
+  </body>
+</html>
